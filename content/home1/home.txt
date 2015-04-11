@@ -1,0 +1,21 @@
+Title: Home1
+
+----
+
+Bodyid: home-page
+
+----
+
+Coverbtn: Sign up now!
+
+----
+
+Coverpic: lvrs-site-3.jpg
+
+----
+
+Covertitle: Bring Back The Butterflies
+
+----
+
+Coversubtitle: LVRS provides tailored experiences for couples designed to reignite passion in a relationship, delivered to you every month.

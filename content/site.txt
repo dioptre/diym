@@ -1,0 +1,25 @@
+Title: StreetIssue
+
+----
+
+Author: StreetIssue
+
+----
+
+Description: StreetIssue is a magazine for the homeless people.
+
+----
+
+Copyright: © 2014-(date: Year)
+
+----
+
+Loginurl: shop#/login
+
+----
+
+Signupurl: shop#/signup
+
+----
+
+Css: 

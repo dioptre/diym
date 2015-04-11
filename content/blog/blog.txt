@@ -1,0 +1,13 @@
+Title: Blog
+
+----
+
+Coverpic: lvrs-blog.jpg
+
+----
+
+Cover: Welcome to the LVRS Blog
+
+----
+
+Subcover: Tips on love, relationships and life.

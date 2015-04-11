@@ -1,0 +1,25 @@
+Title: Home
+
+----
+
+Bodyid: home-page
+
+----
+
+Coverbtn: Learn More
+
+----
+
+Coverpic: homeless-blur.jpg
+
+----
+
+Covertitle: Bring Back Dignity to the Homeless
+
+----
+
+Coversubtitle: StreetIssue provides a great magazine with contributions from authors in the Washington Post, New York Times and Wall Street Journal
+
+----
+
+Coverbtnlink: #why

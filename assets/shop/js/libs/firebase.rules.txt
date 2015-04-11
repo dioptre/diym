@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "subscriptions" : {
+	    ".read": "auth.admin == true",
+      ".write": "auth.admin == true"
+    },
+    "users": {
+      ".write" : true,
+      "$user": {
+        ".read": "auth != null && auth.uid == $user",
+        ".write": "!data.exists() || (auth != null && auth.uid == $user)"
+      }
+    }
+  }
+}

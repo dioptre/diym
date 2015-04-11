@@ -1,0 +1,17 @@
+Title: shop
+
+----
+
+Bodyid: 
+
+----
+
+Coverhero: 
+
+----
+
+Covertext: 
+
+----
+
+Text:
