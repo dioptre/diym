@@ -306,8 +306,6 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin)
 
 		Ember.run.scheduleOnce('afterRender', this, function () {
 			console.log('sequencing')
-
-			debugger;
 	
 	
 	    // Canvas rendering class
@@ -385,9 +383,9 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin)
     var lastY = null;
 
     canvas.addEventListener('mousemove', function(e) {
-        var x = parseInt(e.pageX / renderer.tilesize) * renderer.tilesize;
-        var y = parseInt(e.pageY / renderer.tilesize) * renderer.tilesize;
-
+        var x = parseInt(e.layerX / renderer.tilesize) * renderer.tilesize;
+        var y = parseInt(e.layerY / renderer.tilesize) * renderer.tilesize;
+		console.log(e)
         renderer.drawCellRect('red', x, y);
 
         if((lastX !== null && lastX != x) || (lastY !== null && lastY != y)) {
