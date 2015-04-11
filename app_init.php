@@ -17,8 +17,8 @@
 	$GLOBALS['sendgrid.sender'] = 'andrew@expedit.com.au';
 	$GLOBALS['sendgrid.recipient'] = 'andrew@expedit.com.au';
 
-	$GLOBALS['firebase.secret'] = "";
-	$GLOBALS['firebase.url'] = 'https://crackling-inferno-2667.firebaseIO.com';
+	$GLOBALS['firebase.secret'] = "nDi5EuyMqhsGTCSzlF0rBECmV1Voyb9wXUsABadO";
+	$GLOBALS['firebase.url'] = 'https://sizzling-inferno-8323.firebaseio.com';
 
 	Stripe::setApiKey($stripe['secret_key']);
 ?>

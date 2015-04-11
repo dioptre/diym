@@ -27,7 +27,7 @@ function getParameterByName(name) {
 Ember.Application.initializer({
   name: 'emberfire:firebase',
   initialize: function(container, application) {
-  	var firebase = new Firebase('https://crackling-inferno-2667.firebaseIO.com/');
+  	var firebase = new Firebase('https://sizzling-inferno-8323.firebaseio.com/');
     application.register('firebase:main', firebase, { instantiate: false, singleton: true });
 	      Ember.A(['model', 'controller', 'view', 'route', 'adapter', 'component']).forEach(function(component) {
 	        application.inject(component, 'firebase', 'firebase:main');
@@ -234,8 +234,24 @@ App.Router.map(function() {
   this.route('invoices');
   this.route('sell');
   this.route('seller');
+  this.route('sequencer');
 });
 
+App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin)
+{
+	
+}
+
+
+LiquidFire.map(function(){
+    // For the trigger modal
+    this.transition(
+		this.fromRoute('index'),
+		this.toRoute('sequencer'),
+		this.use('toLeft'),
+		this.reverse('toRight')
+    );
+});
 
 App.IndexRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin);
 App.IndexController = Ember.Controller.extend({
