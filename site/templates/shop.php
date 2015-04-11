@@ -117,7 +117,9 @@
   </script>
 
    <script type="text/x-handlebars" data-template-name="sequencer">
-   Sequencer...
+		<div role="main">
+            <canvas id="entities" style="display:block;">Your browser does not support canvas</canvas>
+        </div>
    </script>
   
   <script type="text/x-handlebars" data-template-name="index">

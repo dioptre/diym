@@ -295,8 +295,135 @@ App.register('transitions:main', function(){
 
 App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin)
 {
-	
 }
+	
+	App.SequencerView = Ember.View.extend({
+	didInsertElement: function(){
+		this._super();
+
+
+
+
+		Ember.run.scheduleOnce('afterRender', this, function () {
+			console.log('sequencing')
+
+			debugger;
+	
+	
+	    // Canvas rendering class
+    var Renderer = function(canvas, width, height) {
+        this.canvas   = canvas;
+        this.context  = canvas.getContext('2d');
+        this.tilesize = 32;
+        this.onresize = function() {};
+
+        this.resize(width, height);
+    }
+
+    Renderer.prototype.resize = function(width, height) {
+        this.canvas.width = width;
+        this.canvas.height = height;
+        this.onresize();
+    }
+
+    Renderer.prototype.getWidth = function() {
+        return this.canvas.width;
+    }
+
+    Renderer.prototype.getHeight = function() {
+        return this.canvas.height;
+    }
+
+    Renderer.prototype.drawCellRect = function(color, x, y) {
+        this.context.save();
+        this.context.lineWidth = 2;
+        this.context.strokeStyle = color;
+        this.context.translate(x, y);
+        this.context.strokeRect(0, 0, this.tilesize, this.tilesize);
+        this.context.restore();
+    }
+
+    Renderer.prototype.drawTile = function(image, x, y, sx, sy) {
+        this.context.save();
+        this.context.drawImage(image, sx, sy, this.tilesize, this.tilesize, x, y, this.tilesize, this.tilesize);
+        this.context.restore();
+    }
+
+    Renderer.prototype.clearRect = function(x, y) {
+        this.context.clearRect(x, y, this.tilesize, this.tilesize);
+    }
+
+    Renderer.prototype.renderMap = function(map, tilesheet) {
+        for(var i = 0; i < (this.getHeight() / this.tilesize); i++) {
+            for(var j = 0; j < (this.getWidth() / this.tilesize); j++) {
+
+                var row = i * this.tilesize;
+                var col = j * this.tilesize;
+
+                if(map && (i in map) && (j in map[i])) {
+                    this.drawTile(tilesheet, col, row, map[i][j][0], map[i][j][1]);
+                } else {
+                    this.drawCellRect('#333', col, row);
+                }
+            }
+        }
+    }
+
+    // Use the correct document according to the window argument
+    var document = window.document;
+    var status = 0;
+
+    // Extract and canvas, and instantiate the renderer
+    var canvas = document.getElementById('entities');
+    var renderer = new Renderer(canvas, window.innerWidth, window.innerHeight);
+
+    window.addEventListener('resize', function() {
+        renderer.resize(window.innerWidth, window.innerHeight);
+    });
+
+    var lastX = null;
+    var lastY = null;
+
+    canvas.addEventListener('mousemove', function(e) {
+        var x = parseInt(e.pageX / renderer.tilesize) * renderer.tilesize;
+        var y = parseInt(e.pageY / renderer.tilesize) * renderer.tilesize;
+
+        renderer.drawCellRect('red', x, y);
+
+        if((lastX !== null && lastX != x) || (lastY !== null && lastY != y)) {
+            renderer.clearRect(lastX, lastY);
+            renderer.drawCellRect('#333', lastX, lastY);
+        }
+
+        lastX = x;
+        lastY = y;
+    })
+
+    var map = new Array(
+        [[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ]],
+        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
+        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
+        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
+        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
+        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
+        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
+        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
+        [[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ]]
+    );
+
+    var sprite = new Image();
+    var renderMap = function() { renderer.renderMap(map, sprite); }
+
+    // Render the map when the sprite is ready and on resize
+    sprite.onload = function() { renderMap(); }
+    renderer.onresize = function() { renderMap(); }
+
+    // Define the sprite source url
+    sprite.src = 'http://i4.photobucket.com/albums/y118/rpg_man/GSCTileset32x32.png';
+	
+			})
+	}
+});
 
 
 
@@ -746,3 +873,4 @@ App.Feedback = DS.Model.extend({
 	date_date: '',
 	feedback: ''
 });
+
