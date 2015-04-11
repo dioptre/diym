@@ -1,6 +1,6 @@
 <?php snippet('header') ?>
 
-			<div class="blog-slider"></div>
+			<div class="blog-slider" style="display:none;"></div>
 			
   <script type="text/x-handlebars">
     <!-- ******HEADER****** -->
@@ -344,8 +344,8 @@
   <link rel="stylesheet" type="text/css" href="/assets/shop/css/liquid-fire-0.18.0.css"/>
   <script src="/assets/shop/js/libs/messenger.min.js"></script>
   <script src="/assets/shop/js/libs/messenger-theme-future.js"></script>
-
-  <script src="/assets/shop/js/libs/liquid-fire-0.18.0.js"></script>
+  <script src="/assets/shop/js/libs/giftwrapped-addons.js"></script>
+  
   <script src="/assets/shop/js/app.js?v=2"></script>
 
 </body>

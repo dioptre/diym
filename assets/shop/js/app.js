@@ -57,7 +57,8 @@ Ember.Application.initializer({
 });
 
 App = Ember.Application.create();
-
+GiftWrap.install(App);
+var LiquidFire = GiftWrap.require('liquid-fire');
 
 EXPEDIT = {};
 EXPEDIT.SubscriptionOnlyRouteMixin = Ember.Mixin.create({
@@ -237,14 +238,52 @@ App.Router.map(function() {
   this.route('sequencer');
 });
 
-App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin)
-{
-	
+function biggestSize(context, dimension) {
+  var sizes = [];
+  if (context.newElement) {
+    sizes.push(parseInt(context.newElement.css(dimension), 10));
+    sizes.push(parseInt(context.newElement.parent().css(dimension), 10));
+  }
+  if (context.oldElement) {
+    sizes.push(parseInt(context.oldElement.css(dimension), 10));
+    sizes.push(parseInt(context.oldElement.parent().css(dimension), 10));
+  }
+  return Math.max.apply(null, sizes);
 }
 
+App.register('transition:toLeft', function (opts) {
+  var direction = 1;
+  if (opts && opts.direction === 'cw') {
+    direction = -1;
+  }
+  LiquidFire.stop(this.oldElement);
+  //debugger;
+  //this.oldElement.css('transform-origin', '50% 150%');
+  //this.newElement.css('transform-origin', '50% 150%');
+  var bigger = biggestSize(this, 'width');
+  return LiquidFire.Promise.all([
+    LiquidFire.animate(this.oldElement, { translateX: (bigger * direction) + 'px' }, opts),
+    LiquidFire.animate(this.newElement, { translateX: ["0px", (-1 * bigger * direction) + 'px'] }, opts),
+  ]);
+});
 
-LiquidFire.map(function(){
-    // For the trigger modal
+App.register('transition:toRight', function (opts) {
+  var direction = 1;
+  if (opts && opts.direction === 'cw') {
+    direction = -1;
+  }
+  LiquidFire.stop(this.oldElement);
+  //debugger;
+  //this.oldElement.css('transform-origin', '50% 150%');
+  //this.newElement.css('transform-origin', '50% 150%');
+  var bigger = biggestSize(this, 'width');
+  return LiquidFire.Promise.all([
+    LiquidFire.animate(this.oldElement, { translateX: (-1 * bigger * direction)  + 'px' }, opts),
+    LiquidFire.animate(this.newElement, { translateX: ["0px", (bigger * direction) + 'px'] }, opts),
+  ]);
+});
+
+App.register('transitions:main', function(){
     this.transition(
 		this.fromRoute('index'),
 		this.toRoute('sequencer'),
@@ -252,6 +291,15 @@ LiquidFire.map(function(){
 		this.reverse('toRight')
     );
 });
+
+
+App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin)
+{
+	
+}
+
+
+
 
 App.IndexRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin);
 App.IndexController = Ember.Controller.extend({

@@ -5159,7 +5159,7 @@ enifed('ember-debug', ['exports', 'ember-metal/core', 'ember-metal/error', 'embe
     }
 
     if (throwAssertion) {
-      throw new EmberError['default']("Assertion Failed: " + desc);
+      //throw new EmberError['default']("Assertion Failed: " + desc);
     }
   };
 
