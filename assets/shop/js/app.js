@@ -293,9 +293,27 @@ App.register('transitions:main', function(){
 });
 
 
-App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin)
+App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin,
 {
-}
+	model: function (params){
+		var model = {
+			id: 'asdasdasd',
+			instruments: 
+			[
+				{instrumentName: 'acoustic_grand_piano',
+				 pitches : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15,16 ] //16notes, 16 beats //Hz
+				 
+				},
+				{instrumentName: 'synth_drum',
+				 pitches : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15,16 ] //16notes, 16 beats //Hz
+				 
+				},
+			]
+		};
+		return model; 
+		
+	}
+});
 	
 	App.SequencerView = Ember.View.extend({
 	didInsertElement: function(){
@@ -361,7 +379,7 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin)
                 if(map && (i in map) && (j in map[i])) {
                     this.drawTile(tilesheet, col, row, map[i][j][0], map[i][j][1]);
                 } else {
-                    this.drawCellRect('#333', col, row);
+                    this.drawCellRect('#FFEEEE', col, row);
                 }
             }
         }
@@ -373,11 +391,18 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin)
 
     // Extract and canvas, and instantiate the renderer
     var canvas = document.getElementById('entities');
-    var renderer = new Renderer(canvas, window.innerWidth, window.innerHeight);
-
-    window.addEventListener('resize', function() {
-        renderer.resize(window.innerWidth, window.innerHeight);
-    });
+    var renderer = new Renderer(canvas, 512, 384);
+	var mousedown = 0;
+	window.addEventListener('mousedown', function() {
+		mousedown++;
+	});
+	window.addEventListener('mouseup', function() {
+		mousedown--;
+	});
+	
+    // window.addEventListener('resize', function() {
+        // renderer.resize(window.innerWidth, window.innerHeight);
+    // });
 
     var lastX = null;
     var lastY = null;
@@ -385,18 +410,35 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin)
     canvas.addEventListener('mousemove', function(e) {
         var x = parseInt(e.layerX / renderer.tilesize) * renderer.tilesize;
         var y = parseInt(e.layerY / renderer.tilesize) * renderer.tilesize;
-		console.log(e)
-        renderer.drawCellRect('red', x, y);
 
-        if((lastX !== null && lastX != x) || (lastY !== null && lastY != y)) {
+        //renderer.drawCellRect('red', x, y);
+        if(mousedown && ((lastX !== null && lastX != x) || (lastY !== null && lastY != y))) {
             renderer.clearRect(lastX, lastY);
-            renderer.drawCellRect('#333', lastX, lastY);
+            renderer.drawCellRect('#FFEEEE', lastX, lastY);
+
         }
 
         lastX = x;
         lastY = y;
     })
+	
+	canvas.addEventListener('click', function(e) {
+        var x = parseInt(e.layerX / renderer.tilesize) * renderer.tilesize;
+        var y = parseInt(e.layerY / renderer.tilesize) * renderer.tilesize;
 
+        //renderer.drawCellRect('red', x, y);
+			console.log(mousedown);
+        
+            renderer.clearRect(x, y);
+            renderer.drawCellRect('#FFEEEE', x, y);
+			map.arrayContentDidChange();
+        
+
+    })
+
+	
+	
+	
     var map = new Array(
         [[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ]],
         [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
@@ -408,6 +450,17 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin)
         [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
         [[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ]]
     );
+	
+	var obs = {
+	arrayWillChange : function(observedObj, start, removeCount, addCount) {
+		console.log('changing');
+	},
+	arrayDidChange : function(observedObj, start, removeCount, addCount) {
+		console.log('changed')
+	}
+	}
+	map.addArrayObserver(obs);
+	map[0] = [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]];
 
     var sprite = new Image();
     var renderMap = function() { renderer.renderMap(map, sprite); }

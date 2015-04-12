@@ -118,7 +118,10 @@
 
    <script type="text/x-handlebars" data-template-name="sequencer">
 		<div role="main">
-            <canvas id="entities" style="display:block;">Your browser does not support canvas</canvas>
+            <canvas id="entities" style="display:block;text-align:center;padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;">Your browser does not support canvas</canvas>
         </div>
    </script>
   
