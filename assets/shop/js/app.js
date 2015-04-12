@@ -295,41 +295,17 @@ App.register('transitions:main', function(){
 
 App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin,
 {
-	model: function (params){
-		var model = {
-			id: 'asdasdasd',
-			instruments: 
-			[
-				{instrumentName: 'acoustic_grand_piano',
-				 pitches : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15,15 ] //16notes, 16 beats //Hz			 
-				},
-				{instrumentName: 'synth_drum',
-				 pitches : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15,15 ] //16notes, 16 beats //Hz
-				 
-				},
-			]
-		};
-		var obs = {
-			arrayWillChange : function(observedObj, start, removeCount, addCount) {
-				console.log('changing');
-			},
-			arrayDidChange : function(observedObj, start, removeCount, addCount) {
-				console.log('changed')
-			}
-		};
-		Enumerable.From(model.instruments).Select(function(item) {
-			item.addArrayObserver(obs);
-		});
-		model.currentSequence = model.instruments[0];
-		App.Playback(model.currentSequence);
-		return model; 
-		
-	}
+	
+});
+
+App.SequencerController = Ember.Controller.extend({
+	needs: ['application'],
+	music: Ember.computed.alias('controllers.application.model'),
 });
 
 
 	
-	App.SequencerView = Ember.View.extend({
+App.SequencerView = Ember.View.extend({
 	didInsertElement: function(){
 		this._super();
 
@@ -429,8 +405,21 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin,
 
         //renderer.drawCellRect('red', x, y);
         if(mousedown && ((lastX !== null && lastX != x) || (lastY !== null && lastY != y))) {
-            renderer.clearRect(lastX, lastY);
-            renderer.drawCellRect('#FFEEEE', lastX, lastY);
+            var row = Math.floor( y / 32);
+			var col = Math.floor( x / 32);
+			renderer.clearCol(col);
+			for (var i=0; i < 16; i++)
+				renderer.drawCellRect('#FFEEEE', x, (i*renderer.tilesize));
+			if (map[col] == row) {
+				map[col] = 0;
+			}
+			else {
+				map[col] = row;
+				renderer.drawTile(sprite, x, y - renderer.tilesize, x, y - renderer.tilesize);
+			}
+
+			
+			map.arrayContentDidChange();
 
         }
 
@@ -465,7 +454,7 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin,
 	
 	
 	
-    var model = this.get('controller.model.currentSequence');
+    var model = this.get('controller.music.currentSequence');
 	var map = model.pitches;
 	
 
@@ -516,7 +505,41 @@ App.IndexView = Ember.View.extend({
 	}
 })
 
-App.ApplicationRoute = Ember.Route.extend(EXPEDIT.ApplicationRouteMixin);
+App.ApplicationRoute = Ember.Route.extend(EXPEDIT.ApplicationRouteMixin, {
+	model: function (params){
+		var model = {
+			id: 'asdasdasd',
+			instruments: 
+			[
+				{instrumentName: 'acoustic_grand_piano',
+				 pitches : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15,15 ] //16notes, 16 beats //Hz			 
+				},
+				{instrumentName: 'synth_drum',
+				 pitches : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15,15 ] //16notes, 16 beats //Hz
+				 
+				},
+			]
+		};
+		var obs = {
+			arrayWillChange : function(observedObj, start, removeCount, addCount) {
+				console.log('changing');
+			},
+			arrayDidChange : function(observedObj, start, removeCount, addCount) {
+				console.log('changed')
+			}
+		};
+		Enumerable.From(model.instruments).Select(function(item) {
+			item.addArrayObserver(obs);
+		});
+		model.currentSequence = model.instruments[0];
+		App.Playback(model.currentSequence);
+		return model; 
+		
+	}
+	
+})
+App.ApplicationController = Ember.Controller.extend({
+})
 App.SignupController = Ember.Controller.extend(EXPEDIT.FormControllerMixin);
 App.LoginController = Ember.Controller.extend(EXPEDIT.FormControllerMixin);
 

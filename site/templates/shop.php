@@ -80,36 +80,7 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="components/header-tabs">
-  	   {{#if user}}
-        <ul class="nav nav-tabs text-center">
-          {{#if user.data.subscription}}
-            {{#link-to 'index' tagName='li'}}
-              <a>
-                <i class="fa fa-dashboard"></i><br>
-                Dashboard
-              </a>
-            {{/link-to}}
-          {{/if}}
 
-          {{#link-to 'subscribe' tagName='li'}}
-            <a>
-              <i class="fa fa-money"></i><br>
-              Manage subscription
-            </a>
-          {{/link-to}}
-
-
-          {{#if user.data.subscription}}
-            {{#link-to 'article' tagName='li' classNames="last"}}
-              <a>
-                <i class="fa fa-book"></i><br>
-                Articles
-              </a>
-            {{/link-to}}
-          {{/if}}
-
-        </ul>
-      {{/if}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="loading">
@@ -117,85 +88,20 @@
   </script>
 
    <script type="text/x-handlebars" data-template-name="sequencer">
+		<h1>Piano</h1>
 		<div role="main">
             <canvas id="entities" style="display:block;text-align:center;padding-left: 0;
     padding-right: 0;
     margin-left: auto;
     margin-right: auto;">Your browser does not support canvas</canvas>
         </div>
+		{{#link-to 'index' class="typeform-share button"}}Back{{/link-to}}
    </script>
   
   <script type="text/x-handlebars" data-template-name="index">
   	  {{header-tabs user=user.data}}
-      <h1>Dashboard</h1>
-      <h2>Hi {{user.data.firstName}}, welcome to StreetIssue!</h2>
-
-
-
-
-
-      <div class="row">
-        <div class="col-md-4">
-
-
-        <h3><i class="fa fa-rss"></i>&nbsp;Subscriber</h3>
-        <p>Membership status: {{#if user.data.subscription}}
-        	<span class="green"><b>ACTIVE</b></span>
-        	{{#if user.data.date_date.value}}<p>Next Date: <b>{{user.data.date_date.value}}</b></p>{{/if}}
-        	{{else}}<span class="pink"><b>Inactive</b></span>
-                <br>
-
-            	 {{#link-to 'subscribe' class="typeform-share button"}}
-                  Subscribe
-                {{/link-to}}
-
-                &nbsp;
-                &nbsp;
-                &nbsp;
-                <br>
-                <br>
-                <br>
-                {{#link-to 'subscribe' class="typeform-share button" style='margin-left: 10px;'}}
-                  Update Payment Details
-                {{/link-to}}
-
-        	{{/if}}</p>
-
-        </div>
-        <div class="col-md-4">
-
-          <h3><i class="fa fa-pencil"></i>&nbsp;Writer</h3>
-          <a class="typeform-share button" data-mode="1" {{bind-attr href=articleLink}}>
-            Submit an article
-          </a>
-        </div>
-
-        <div class="col-md-4">
-
-
-      <h3>
-      <i class="fa fa-money"></i>
-        &nbsp;Seller</h3>{{#unless user.data.seller}}
-      <a class="typeform-share button" data-mode="1" {{bind-attr href=sellerLink}}>
-        Become a seller
-      </a>
-      {{else}}
-      {{#link-to 'seller' class='typeform-share button'}}See my seller details{{/link-to}}
-      {{/unless}}
-
-
-
-        </div>
-
-
-
-	</div>
-
-
-
-
-
-
+      <h1>{{user.data.firstName}}'s music</h1>
+      
   </script>
 
   <script type="text/x-handlebars" data-template-name="signup">
