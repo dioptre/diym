@@ -479,6 +479,8 @@ App.SequencerView = Ember.View.extend({
 
 App.IndexRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin);
 App.IndexController = Ember.Controller.extend({
+	needs: ['application'],
+	music: Ember.computed.alias('controllers.application.model'),
 	articleLink: function(){
 		var userid = this.get('user.data.id').match(/^.*:(.*)/)[1];
 		return 'https://dioptre.typeform.com/to/OWVf7t?siid=' + userid +'&name=' + this.get('user.data.firstName');
@@ -492,13 +494,13 @@ App.IndexController = Ember.Controller.extend({
 App.IndexView = Ember.View.extend({
 	didInsertElement: function(){
 		this._super();
-
+		var _this = this;
 
 
 
 		Ember.run.scheduleOnce('afterRender', this, function () {
 			console.log('running')
-
+			App.Playback(_this.get('controller.music.currentSequence'));
 			// debugger;
 			(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'widget.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}})()
 		})
@@ -508,6 +510,7 @@ App.IndexView = Ember.View.extend({
 App.ApplicationRoute = Ember.Route.extend(EXPEDIT.ApplicationRouteMixin, {
 	model: function (params){
 		var model = {
+			started: false,
 			id: 'asdasdasd',
 			instruments: 
 			[
@@ -532,7 +535,7 @@ App.ApplicationRoute = Ember.Route.extend(EXPEDIT.ApplicationRouteMixin, {
 			item.addArrayObserver(obs);
 		});
 		model.currentSequence = model.instruments[0];
-		App.Playback(model.currentSequence);
+
 		return model; 
 		
 	}
