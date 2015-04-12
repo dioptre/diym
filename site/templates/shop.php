@@ -101,7 +101,10 @@
   <script type="text/x-handlebars" data-template-name="index">
   	  {{header-tabs user=user.data}}
       <h1>{{user.data.firstName}}'s music</h1>
-      
+		  {{#link-to 'sequencer' class="mainlink"}}<img src="/assets/shop/images/diy.jpg" width="800px" style="display:block;text-align:center;padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;">{{/link-to}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="signup">
