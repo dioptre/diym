@@ -350,7 +350,7 @@
   <script src="/assets/shop/js/libs/messenger.min.js"></script>
   <script src="/assets/shop/js/libs/messenger-theme-future.js"></script>
   <script src="/assets/shop/js/libs/giftwrapped-addons.js"></script>
-  
+  <script src="/assets/shop/js/libs/linq.min.js"></script>
   <script src="/assets/shop/js/app.js?v=2"></script>
 
 </body>

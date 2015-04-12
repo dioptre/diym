@@ -301,8 +301,7 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin,
 			instruments: 
 			[
 				{instrumentName: 'acoustic_grand_piano',
-				 pitches : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15,16 ] //16notes, 16 beats //Hz
-				 
+				 pitches : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15,16 ] //16notes, 16 beats //Hz			 
 				},
 				{instrumentName: 'synth_drum',
 				 pitches : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15,16 ] //16notes, 16 beats //Hz
@@ -310,6 +309,18 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin,
 				},
 			]
 		};
+		var obs = {
+			arrayWillChange : function(observedObj, start, removeCount, addCount) {
+				console.log('changing');
+			},
+			arrayDidChange : function(observedObj, start, removeCount, addCount) {
+				console.log('changed')
+			}
+		};
+		Enumerable.From(model.instruments).Select(function(item) {
+			item.addArrayObserver(obs);
+		});
+		
 		return model; 
 		
 	}
@@ -439,28 +450,11 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin,
 	
 	
 	
-    var map = new Array(
-        [[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ]],
-        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
-        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
-        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
-        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
-        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
-        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
-        [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]],
-        [[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ],[32,0 ]]
-    );
+    var model = this.get('controller.model');
+	var map = this.get('controller.model.instruments')[0].pitches;
 	
-	var obs = {
-	arrayWillChange : function(observedObj, start, removeCount, addCount) {
-		console.log('changing');
-	},
-	arrayDidChange : function(observedObj, start, removeCount, addCount) {
-		console.log('changed')
-	}
-	}
-	map.addArrayObserver(obs);
-	map[0] = [[32,0 ],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[672,0],[32,0 ]];
+
+
 
     var sprite = new Image();
     var renderMap = function() { renderer.renderMap(map, sprite); }
