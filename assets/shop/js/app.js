@@ -301,10 +301,10 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin,
 			instruments: 
 			[
 				{instrumentName: 'acoustic_grand_piano',
-				 pitches : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15,16 ] //16notes, 16 beats //Hz			 
+				 pitches : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15,15 ] //16notes, 16 beats //Hz			 
 				},
 				{instrumentName: 'synth_drum',
-				 pitches : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15,16 ] //16notes, 16 beats //Hz
+				 pitches : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ,14 ,15,15 ] //16notes, 16 beats //Hz
 				 
 				},
 			]
@@ -320,11 +320,14 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin,
 		Enumerable.From(model.instruments).Select(function(item) {
 			item.addArrayObserver(obs);
 		});
-		
+		model.currentSequence = model.instruments[0];
+		App.Playback(model.currentSequence);
 		return model; 
 		
 	}
 });
+
+
 	
 	App.SequencerView = Ember.View.extend({
 	didInsertElement: function(){
@@ -372,7 +375,7 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin,
 
     Renderer.prototype.drawTile = function(image, x, y, sx, sy) {
         this.context.save();
-        this.context.drawImage(image, sx, sy, this.tilesize, this.tilesize, x, y, this.tilesize, this.tilesize);
+        this.context.drawImage(image, x, y, this.tilesize, this.tilesize);
         this.context.restore();
     }
 
@@ -381,14 +384,12 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin,
     }
 
     Renderer.prototype.renderMap = function(map, tilesheet) {
-        for(var i = 0; i < (this.getHeight() / this.tilesize); i++) {
-            for(var j = 0; j < (this.getWidth() / this.tilesize); j++) {
-
-                var row = i * this.tilesize;
-                var col = j * this.tilesize;
-
-                if(map && (i in map) && (j in map[i])) {
-                    this.drawTile(tilesheet, col, row, map[i][j][0], map[i][j][1]);
+        for(var i = 0; i < 16; i++) {
+			var col = i * this.tilesize;
+			for (var j = 0; j < 16; j++) {
+                var row = j * this.tilesize;
+                if(map[i] == j && map[i] > 0) {
+                    this.drawTile(tilesheet, col, row - this.tilesize, col, row - this.tilesize);
                 } else {
                     this.drawCellRect('#FFEEEE', col, row);
                 }
@@ -402,7 +403,7 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin,
 
     // Extract and canvas, and instantiate the renderer
     var canvas = document.getElementById('entities');
-    var renderer = new Renderer(canvas, 512, 384);
+    var renderer = new Renderer(canvas, 512, 480);
 	var mousedown = 0;
 	window.addEventListener('mousedown', function() {
 		mousedown++;
@@ -450,8 +451,8 @@ App.SequencerRoute = Ember.Route.extend(EXPEDIT.ProtectedRouteMixin,
 	
 	
 	
-    var model = this.get('controller.model');
-	var map = this.get('controller.model.instruments')[0].pitches;
+    var model = this.get('controller.model.currentSequence');
+	var map = model.pitches;
 	
 
 
@@ -919,3 +920,161 @@ App.Feedback = DS.Model.extend({
 	feedback: ''
 });
 
+
+
+App.Playback = function(instrument) {
+	 
+	MIDI.loadPlugin({
+		soundfontUrl: "/assets/shop/js/libs/soundfont/",
+		instrument: instrument.instrumentName,
+		onprogress: function(state, progress) {
+			console.log(state, progress);
+		},
+		onsuccess: function() {
+            
+
+            var comp = instrument.pitches;
+            
+
+            for(var i=0; i < comp.length; i++){
+                
+                           
+                if(comp[i]==0){           
+			     var delay = 0; // play one note every quarter second
+			     var note = 48; // the MIDI note
+			     var velocity = 0; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);
+                }else if(comp[i]==1){
+                var delay = 0; // play one note every quarter second
+			     var note = 48; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                }
+                else if(comp[i]==2){
+                var delay = 0; // play one note every quarter second
+			     var note = 50; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                } else if(comp[i]==3){
+                var delay = 0; // play one note every quarter second
+			     var note = 52; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                } else if(comp[i]==4){
+                var delay = 0; // play one note every quarter second
+			     var note = 53; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                } else if(comp[i]==5){
+                var delay = 0; // play one note every quarter second
+			     var note = 55; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                } else if(comp[i]==6){
+                var delay = 0; // play one note every quarter second
+			     var note = 57; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                } else if(comp[i]==7){
+                var delay = 0; // play one note every quarter second
+			     var note = 59; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                } else if(comp[i]==8){
+                var delay = 0; // play one note every quarter second
+			     var note = 60; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                }else if(comp[i]==9){
+                var delay = 0; // play one note every quarter second
+			     var note = 62; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                } else if(comp[i]==10){
+                var delay = 0; // play one note every quarter second
+			     var note = 64; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                } else if(comp[i]==11){
+                var delay = 0; // play one note every quarter second
+			     var note = 65; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                } else if(comp[i]==12){
+                var delay = 0; // play one note every quarter second
+			     var note = 67; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                } else if(comp[i]==13){
+                var delay = 0; // play one note every quarter second
+			     var note = 69; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                } else if(comp[i]==14){
+                var delay = 0; // play one note every quarter second
+			     var note = 71; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                } else if(comp[i]==15){
+                var delay = 0; // play one note every quarter second
+			     var note = 72; // the MIDI note
+			     var velocity = 127; // how hard the note hits
+			     // play the note
+			     MIDI.setVolume(0, 127);
+			     MIDI.noteOn(0, note, velocity, delay);
+			     MIDI.noteOff(0, note, delay + 0.75);                 
+                } 
+                
+                //sleep(500);
+                
+            
+            }
+            
+		}
+	});
+}

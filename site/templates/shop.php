@@ -351,6 +351,21 @@
   <script src="/assets/shop/js/libs/messenger-theme-future.js"></script>
   <script src="/assets/shop/js/libs/giftwrapped-addons.js"></script>
   <script src="/assets/shop/js/libs/linq.min.js"></script>
+  
+  	<script src="/assets/shop/js/libs/Base64.js" type="text/javascript"></script>
+	<script src="/assets/shop/js/libs/Base64binary.js" type="text/javascript"></script>
+	<script src="/assets/shop/js/libs/WebAudioAPI.js" type="text/javascript"></script>
+	<!-- midi.js package -->
+	<script src="/assets/shop/js/libs/midi/audioDetect.js" type="text/javascript"></script>
+	<script src="/assets/shop/js/libs/midi/gm.js" type="text/javascript"></script>
+	<script src="/assets/shop/js/libs/midi/loader.js" type="text/javascript"></script>
+	<script src="/assets/shop/js/libs/midi/plugin.audiotag.js" type="text/javascript"></script>
+	<script src="/assets/shop/js/libs/midi/plugin.webaudio.js" type="text/javascript"></script>
+	<script src="/assets/shop/js/libs/midi/plugin.webmidi.js" type="text/javascript"></script>
+	<!-- utils -->
+	<script src="/assets/shop/js/libs/util/dom_request_xhr.js" type="text/javascript"></script>
+	<script src="/assets/shop/js/libs/util/dom_request_script.js" type="text/javascript"></script>
+  
   <script src="/assets/shop/js/app.js?v=2"></script>
 
 </body>
