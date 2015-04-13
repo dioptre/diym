@@ -182,7 +182,8 @@ EXPEDIT.FormControllerMixin = Ember.Mixin.create({
 			    console.log("Error creating user:", error);
 			  }
 			});
-	  	}
+	  	},
+		submit: function() {}
 	  }
 });
 EXPEDIT.ProtectedRouteMixin = Ember.Mixin.create({

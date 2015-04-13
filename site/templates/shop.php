@@ -137,7 +137,7 @@
 
   <script type="text/x-handlebars" data-template-name="login">
     <div class="userapp">
-      <form class="form" {{action login on='submit'}}>
+      <form class="form" {{action "login"}}>
         <h2 class="form-heading">Please Log In</h2>
         <div class="form-fields">
           {{input id='email' placeholder='Email' class='form-control' value=email error=emailValid}}
