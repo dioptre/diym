@@ -1,12 +1,12 @@
-Title: StreetIssue
+Title: DIY Music
 
 ----
 
-Author: StreetIssue
+Author: DIY Music
 
 ----
 
-Description: StreetIssue is a magazine for the homeless people.
+Description: DIY Music is a simple platform to learn music.
 
 ----
 
